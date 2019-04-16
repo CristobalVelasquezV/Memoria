@@ -55,7 +55,6 @@ define(["require", "exports", "../Render/Render", "../Input/Input", "../GameObje
                 let go = gos[name];
                 let components = go.getComponents();
                 for (let i = 0; i < components.length; i++) {
-                    console.log(i);
                     components[i].start();
                 }
             }
@@ -72,6 +71,7 @@ define(["require", "exports", "../Render/Render", "../Input/Input", "../GameObje
                 let go = gos[name];
                 let components = go.getComponents();
                 for (let i = 0; i < components.length; i++) {
+                    components[i].update();
                 }
             }
             Input_1.Input.update();

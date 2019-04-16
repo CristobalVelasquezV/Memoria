@@ -9,7 +9,6 @@ export class TestComponent extends IComponent{
         go.addComponent(this);
     }
     awake(): void {
-        throw new Error("Method not implemented.");
     }
 
     start(): void {
@@ -18,7 +17,7 @@ export class TestComponent extends IComponent{
         Engine.addCorutine(g);
     }
     update(): void {
-        throw new Error("Method not implemented.");
+      
     }
     destroy(): void {
         throw new Error("Method not implemented.");

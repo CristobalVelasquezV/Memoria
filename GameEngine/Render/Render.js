@@ -6,15 +6,15 @@ define(["require", "exports", "./Camera/Camera", "./gl/GLBuffer", "./gl/GLManage
             console.log("render init");
             Render.sceneCanvas = GLManager_1.GlManager.initialize();
             Render.initializeGrid();
-            // Render.drawGrid(Render.gridVertices);
+            Render.mProjLines = LineShader_1.LineShader.program.getUniformLocation('mProj');
+            Render.mWorldLines = LineShader_1.LineShader.program.getUniformLocation('mWorld');
+            Render.mViewLines = LineShader_1.LineShader.program.getUniformLocation('mView');
+            Render.drawGrid(Render.gridVertices);
             GLManager_1.gl.clearColor(0, 0, 0, 1);
             GLManager_1.gl.enable(GLManager_1.gl.DEPTH_TEST);
             GLManager_1.gl.enable(GLManager_1.gl.CULL_FACE);
             GLManager_1.gl.frontFace(GLManager_1.gl.CCW);
             GLManager_1.gl.cullFace(GLManager_1.gl.BACK);
-        }
-        static addRenderableComponent(renderableComponent) {
-            return Render.renderableComponents.push(renderableComponent);
         }
         static hasFocus() {
             //document.activeElement === Render.sceneCanvas && document.hasFocus()
@@ -34,18 +34,14 @@ define(["require", "exports", "./Camera/Camera", "./gl/GLBuffer", "./gl/GLManage
             }
             /*Set uniforms change uniform /att to variables*/
             /*Lines Uniform*/
-            //LineShader.program.useProgram();
+            LineShader_1.LineShader.program.useProgram();
             let mProj = Camera_1.Camera.instance.getProjectionMatrix().getArray();
             let mView = Camera_1.Camera.instance.getViewMatrix().getArray();
-            //   gl.uniformMatrix4fv(Render.mProjLines, false, mProj);
-            //  gl.uniformMatrix4fv(Render.mWorldLines, false, this.mWorld.getArray());
-            // gl.uniformMatrix4fv(Render.mViewLines, false, mView);
-            //  Render.buffer.bind();
-            //Render.buffer.draw();
-            /*Mesh Uniforms*/
-            for (let i = 0; i < Render.renderableComponents.length; i++) {
-                this.renderableComponents[i].update();
-            }
+            GLManager_1.gl.uniformMatrix4fv(Render.mProjLines, false, mProj);
+            GLManager_1.gl.uniformMatrix4fv(Render.mWorldLines, false, this.mWorld.getArray());
+            GLManager_1.gl.uniformMatrix4fv(Render.mViewLines, false, mView);
+            Render.buffer.bind();
+            Render.buffer.draw();
         }
         static initializeGrid() {
             let verts = [], spaceBL = 2, nLines = 1000, TotalLL = 1000;
@@ -109,7 +105,6 @@ define(["require", "exports", "./Camera/Camera", "./gl/GLBuffer", "./gl/GLManage
             }
         }
     }
-    Render.renderableComponents = [];
     Render.mWorld = new Mat4_1.Mat4();
     exports.Render = Render;
 });

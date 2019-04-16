@@ -20,10 +20,10 @@ define(["require", "exports", "../../Matrix-gl/Vector3", "../../Matrix-gl/Mat4",
                 Camera.instance.moveForward(-Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);
             }
             if (Input_1.Input.isKeyPressed(Input_1.KeyCode.KEY_A) && !Input_1.Input.isKeyPressed(Input_1.KeyCode.KEY_D)) {
-                Camera.instance.moveRight(Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);
+                Camera.instance.moveRight(-Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);
             }
             if (Input_1.Input.isKeyPressed(Input_1.KeyCode.KEY_D) && !Input_1.Input.isKeyPressed(Input_1.KeyCode.KEY_A)) {
-                Camera.instance.moveRight(-Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);
+                Camera.instance.moveRight(Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);
             }
             if (Input_1.Input.isKeyPressed(Input_1.KeyCode.UP_ARROW) && !Input_1.Input.isKeyPressed(Input_1.KeyCode.DOWN_ARROW)) {
                 Camera.instance.moveUp(Time_1.Time.deltaTime / 1000 * Camera.moveForwardSpeed);

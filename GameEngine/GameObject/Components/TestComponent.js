@@ -7,7 +7,6 @@ define(["require", "exports", "./IComponent", "../../Time/Time", "../../Engine/E
             go.addComponent(this);
         }
         awake() {
-            throw new Error("Method not implemented.");
         }
         start() {
             let g = Gen();
@@ -15,7 +14,6 @@ define(["require", "exports", "./IComponent", "../../Time/Time", "../../Engine/E
             Engine_1.Engine.addCorutine(g);
         }
         update() {
-            throw new Error("Method not implemented.");
         }
         destroy() {
             throw new Error("Method not implemented.");

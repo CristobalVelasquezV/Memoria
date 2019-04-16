@@ -35,10 +35,10 @@ export class Camera {
             Camera.instance.moveForward(-Time.deltaTime / 1000 * Camera.moveForwardSpeed);
         }
         if (Input.isKeyPressed(KeyCode.KEY_A) && !Input.isKeyPressed(KeyCode.KEY_D)) {
-            Camera.instance.moveRight(Time.deltaTime / 1000 * Camera.moveForwardSpeed);
+            Camera.instance.moveRight(-Time.deltaTime / 1000 * Camera.moveForwardSpeed);
         }
         if (Input.isKeyPressed(KeyCode.KEY_D) && !Input.isKeyPressed(KeyCode.KEY_A)) {
-            Camera.instance.moveRight(-Time.deltaTime / 1000 * Camera.moveForwardSpeed);
+            Camera.instance.moveRight(Time.deltaTime / 1000 * Camera.moveForwardSpeed);
         }
 
 

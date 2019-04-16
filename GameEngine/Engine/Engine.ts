@@ -83,8 +83,6 @@ export class Engine {
     private start(): void {
         Time.start();
 
-
-
         SceneManager.actualScene.printAllGameObjects();
         let gos: { [name: string]: GameObject } = SceneManager.actualScene.getAllGameObjects();
         for (let name in gos) {
@@ -92,7 +90,6 @@ export class Engine {
             let go: GameObject = gos[name];
             let components: IComponent[] = go.getComponents();
             for (let i = 0; i < components.length; i++) {
-                console.log(i);
                 components[i].start();
             }
         }
@@ -105,17 +102,14 @@ export class Engine {
         for (let i = 0; i < Engine.corutineList.length; i++) {
             Engine.corutineList[i].next();
         }
-
-
         let gos: { [name: string]: GameObject } = SceneManager.actualScene.getAllGameObjects();
         for (let name in gos) {
             let go: GameObject = gos[name];
             let components: IComponent[] = go.getComponents();
             for (let i = 0; i < components.length; i++) {
-                
+                components[i].update();
             }
         }
-
         Input.update();
         requestAnimationFrame(this.gameLoop.bind(this));
     }

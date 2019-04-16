@@ -14,13 +14,8 @@ import { AbstractBufferAdministrator } from "../../Render/AbstractBufferAdminist
 export class RenderableComponent extends IComponent {
 
     protected enabled: boolean;
-    private readonly renderableIndex: number;
     private mesh: Mesh;
     private usedMaterial: Material;
-    private vertexBuffer: GlBuffer;
-    private indexBuffer: GlBuffer;
-    private normalsBuffer: GlBuffer;
-    private textureCoordinatesBuffer: GlBuffer;
     private bufferAdmin: AbstractBufferAdministrator;
 
     constructor(go: GameObject,mesh: Mesh, material?: Material ) {
@@ -35,7 +30,6 @@ export class RenderableComponent extends IComponent {
         else {
             this.usedMaterial = material;
         }
-        this.renderableIndex = Render.addRenderableComponent(this);
         let program: AbstractProgram = this.material.program;
         let admin: AbstractBufferAdministratorFactory = program.factory;
         this.bufferAdmin = admin.getBufferAdmin(this);
@@ -57,12 +51,14 @@ export class RenderableComponent extends IComponent {
     start(): void {
         
     }
+
     update(): void {
         this.material.program.useProgram();
         this.bufferAdmin.bindBuffers();
         this.bufferAdmin.updateAllUniforms();
         this.bufferAdmin.draw();
     }
+
     public destroy(): void {
 
     }

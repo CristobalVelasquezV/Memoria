@@ -1,4 +1,4 @@
-define(["require", "exports", "./IComponent", "../../Render/Render", "../../Render/Material/Material"], function (require, exports, IComponent_1, Render_1, Material_1) {
+define(["require", "exports", "./IComponent", "../../Render/Material/Material"], function (require, exports, IComponent_1, Material_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class RenderableComponent extends IComponent_1.IComponent {
@@ -14,7 +14,6 @@ define(["require", "exports", "./IComponent", "../../Render/Render", "../../Rend
             else {
                 this.usedMaterial = material;
             }
-            this.renderableIndex = Render_1.Render.addRenderableComponent(this);
             let program = this.material.program;
             let admin = program.factory;
             this.bufferAdmin = admin.getBufferAdmin(this);

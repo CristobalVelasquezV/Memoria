@@ -6,7 +6,6 @@ import { RenderableComponent } from "../../GameObject/Components/RenderableCompo
 export abstract class AbstractBufferAdministratorFactory {
 
     constructor() {
-
     }
 
     abstract getBufferAdmin(renderableComponent: RenderableComponent): AbstractBufferAdministrator;

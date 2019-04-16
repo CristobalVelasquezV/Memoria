@@ -1,20 +1,12 @@
-﻿import { RenderableComponent } from "../GameObject/Components/RenderableComponent";
-import { Camera } from "./Camera/Camera";
+﻿import { Camera } from "./Camera/Camera";
 import { AttributeInformation, GlBuffer } from "./gl/GLBuffer";
 import { gl, GlManager } from "./gl/GLManager";
-import { Material } from "./Material/Material";
 import { LineShader } from "./AbstractProgram/LineShader";
-import { Mesh } from "./Mesh/Mesh";
-import { ShaderLineAdminFactory } from "./AbstractBufferAdministratorFactory/ShaderLineAdminFactory";
-import { ShaderLineBufferAdmin } from "./AbstractBufferAdministrator/ShaderLineBufferAdmin";
 import { Mat4 } from "../Matrix-gl/Mat4";
 
 export class Render {
     //make this class not static for multiples renders scenes split screen.
     private static sceneCanvas: HTMLCanvasElement;
-
-    private static renderableComponents: RenderableComponent[] = [];
-
 
     private static gridVertices: number[];
     private static buffer: GlBuffer;
@@ -28,7 +20,11 @@ export class Render {
         console.log("render init");
         Render.sceneCanvas = GlManager.initialize();
         Render.initializeGrid();
-       // Render.drawGrid(Render.gridVertices);
+
+        Render.mProjLines = LineShader.program.getUniformLocation('mProj');
+        Render.mWorldLines = LineShader.program.getUniformLocation('mWorld');
+        Render.mViewLines = LineShader.program.getUniformLocation('mView');
+        Render.drawGrid(Render.gridVertices);
 
         gl.clearColor(0, 0, 0, 1);
         gl.enable(gl.DEPTH_TEST);
@@ -37,9 +33,6 @@ export class Render {
         gl.cullFace(gl.BACK);
     }
 
-    public static addRenderableComponent(renderableComponent: RenderableComponent): number {
-        return Render.renderableComponents.push(renderableComponent);
-    }
     public static hasFocus(): boolean {
         //document.activeElement === Render.sceneCanvas && document.hasFocus()
         if (document.hasFocus()) {
@@ -61,21 +54,14 @@ export class Render {
         }
         /*Set uniforms change uniform /att to variables*/
         /*Lines Uniform*/
-        //LineShader.program.useProgram();
+        LineShader.program.useProgram();
         let mProj: Float32Array = Camera.instance.getProjectionMatrix().getArray();
         let mView: Float32Array = Camera.instance.getViewMatrix().getArray();
-     //   gl.uniformMatrix4fv(Render.mProjLines, false, mProj);
-      //  gl.uniformMatrix4fv(Render.mWorldLines, false, this.mWorld.getArray());
-       // gl.uniformMatrix4fv(Render.mViewLines, false, mView);
-      //  Render.buffer.bind();
-        //Render.buffer.draw();
-
-        /*Mesh Uniforms*/
-
- 
-        for (let i = 0; i < Render.renderableComponents.length; i++) {
-            this.renderableComponents[i].update();
-        }
+        gl.uniformMatrix4fv(Render.mProjLines, false, mProj);
+        gl.uniformMatrix4fv(Render.mWorldLines, false, this.mWorld.getArray());
+        gl.uniformMatrix4fv(Render.mViewLines, false, mView);
+        Render.buffer.bind();
+        Render.buffer.draw();
     }
 
     public static initializeGrid(): void {
