@@ -64,8 +64,11 @@ define(["require", "exports", "../gl/GLManager", "./TextureManager", "../../Mess
             this.width = asset.width();
             this.height = asset.height();
             this.bind();
-            console.log("sec", asset.data);
             GLManager_1.gl.texImage2D(GLManager_1.gl.TEXTURE_2D, LEVEL, GLManager_1.gl.RGBA, GLManager_1.gl.RGBA, GLManager_1.gl.UNSIGNED_BYTE, asset.data);
+            GLManager_1.gl.texParameteri(GLManager_1.gl.TEXTURE_2D, GLManager_1.gl.TEXTURE_WRAP_S, GLManager_1.gl.CLAMP_TO_EDGE);
+            GLManager_1.gl.texParameteri(GLManager_1.gl.TEXTURE_2D, GLManager_1.gl.TEXTURE_WRAP_T, GLManager_1.gl.CLAMP_TO_EDGE);
+            GLManager_1.gl.texParameteri(GLManager_1.gl.TEXTURE_2D, GLManager_1.gl.TEXTURE_MIN_FILTER, GLManager_1.gl.LINEAR);
+            GLManager_1.gl.texParameteri(GLManager_1.gl.TEXTURE_2D, GLManager_1.gl.TEXTURE_MAG_FILTER, GLManager_1.gl.LINEAR);
             this.isLoaded = true;
         }
     }

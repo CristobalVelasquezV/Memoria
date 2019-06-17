@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "target": "es6"
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs",
+    "target": "es6"
+  },
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}

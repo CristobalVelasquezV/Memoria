@@ -1,14 +1,14 @@
 ﻿import { Texture } from "../Texture/Texture";
 import { AbstractProgram } from "../AbstractProgram/AbstractProgram";
 import { BasicNoTextureMeshShader } from "../AbstractProgram/BasicNoTextureMeshShader";
+import { RenderableComponent } from "../../GameObject/Components/RenderableComponent";
 
 export class Material {
 
     private materialName: string
     private usedProgram: AbstractProgram;
     private usedTexture: Texture | null;
-    //add color later
-
+    private renderComponentsUsingMat: RenderableComponent[] = [];
     public constructor(name: string, texture?: Texture, absProgram?: AbstractProgram) {
         this.materialName = name;
         if (absProgram === undefined) {
@@ -28,8 +28,16 @@ export class Material {
         } 
     }
 
+    public addRenderComponent(render: RenderableComponent): void {
+        // needs id to delete later.
+    }
+
     public get program(): AbstractProgram {
         return this.usedProgram;
+    }
+
+    public set program(prog: AbstractProgram) {
+        this.usedProgram = prog;
     }
 
     public get texture(): Texture {

@@ -36,7 +36,6 @@ export class Mesh implements IMessageHandler {
             Message.subscribe(Message.MESSAGE_ASSET_LOADED + Mesh.modelPath + this.name, this);
             this.jsonData = AssetManager.getAsset(Mesh.modelPath + this.name) as JsonAsset;
             this.jsonData2 = AssetManager.getAssetSync(Mesh.modelPath + this.name, this) as JsonAsset;
-
             if (this.jsonData !== undefined) {
                 //falta checkear unicidad
                 this.loadMeshFromAsset(this.jsonData);

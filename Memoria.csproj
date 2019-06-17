@@ -48,6 +48,8 @@
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -116,6 +118,10 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
     <Content Include="Scripts\jquery-3.0.0.min.js" />
@@ -133,6 +139,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\models\cube.json" />
@@ -150,6 +161,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="tsconfig.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -168,7 +180,11 @@
     <TypeScriptCompile Include="GameEngine\AssetManager\TextAssetLoader.ts" />
     <TypeScriptCompile Include="GameEngine\AssetManager\JsonAssetLoader.ts" />
     <TypeScriptCompile Include="GameEngine\Engine\Engine.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\BoxColliderComponent.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\CollectableComponent.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\ColliderComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\DirectionalLightComponent.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\ControllerComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\TestComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\IComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\RenderableComponent.ts" />
@@ -178,20 +194,30 @@
     <TypeScriptCompile Include="GameEngine\Input\Input.ts" />
     <TypeScriptCompile Include="GameEngine\Matrix-gl\GlMatrix.ts" />
     <TypeScriptCompile Include="GameEngine\Matrix-gl\Mat4.ts" />
+    <TypeScriptCompile Include="GameEngine\Matrix-gl\Quaternion.ts" />
     <TypeScriptCompile Include="GameEngine\Matrix-gl\Vector3.ts" />
     <TypeScriptCompile Include="GameEngine\Messege\IMessageHandler.ts" />
     <TypeScriptCompile Include="GameEngine\Messege\Message.ts" />
     <TypeScriptCompile Include="GameEngine\Messege\MessageManager.ts" />
     <TypeScriptCompile Include="GameEngine\Messege\MessageSubscription.ts" />
+    <TypeScriptCompile Include="GameEngine\Physics\Physics.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministratorFactory\AbstractBufferAdministratorFactory.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministratorFactory\BasicNoTextureMeshAdminFactory.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministratorFactory\ShaderLineAdminFactory.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministratorFactory\TextureMeshAdministratorFactory.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministrator\AbstractBufferAdministrator.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministrator\BasicNoTextureBufferAdmin.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministrator\ShaderLineBufferAdmin.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractBufferAdministrator\TextureMeshBufferAdmin.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractProgram\BasicNoTextureMeshShader.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractProgram\LineShader.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractProgram\TextureMeshShader.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\AbstractUniformInformation.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformRotation.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformAmbientLight.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformDirectionalLightColor.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformDirectionalLightDirection.ts" />
+    <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformSampler.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformSize.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformViewSceneCamera.ts" />
     <TypeScriptCompile Include="GameEngine\Render\AbstractUniformInformation\UniformProjectionSceneCamera.ts" />

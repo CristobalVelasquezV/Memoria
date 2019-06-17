@@ -2,8 +2,8 @@ define(["require", "exports", "../AbstractProgram/BasicNoTextureMeshShader"], fu
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Material {
-        //add color later
         constructor(name, texture, absProgram) {
+            this.renderComponentsUsingMat = [];
             this.materialName = name;
             if (absProgram === undefined) {
                 this.usedProgram = BasicNoTextureMeshShader_1.BasicNoTextureMeshShader.program;
@@ -19,8 +19,14 @@ define(["require", "exports", "../AbstractProgram/BasicNoTextureMeshShader"], fu
                 this.usedTexture = texture;
             }
         }
+        addRenderComponent(render) {
+            // needs id to delete later.
+        }
         get program() {
             return this.usedProgram;
+        }
+        set program(prog) {
+            this.usedProgram = prog;
         }
         get texture() {
             return this.usedTexture;

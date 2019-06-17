@@ -50,7 +50,7 @@ export class BasicNoTextureMeshShader extends AbstractProgram {
             'void main()',
             '{',
             'vec3 color=fragNormal;',
-            'color.x=-color.x;',
+            'color.x=color.x;',
             'gl_FragColor=vec4(color,1.0);',
             '}'
         ];

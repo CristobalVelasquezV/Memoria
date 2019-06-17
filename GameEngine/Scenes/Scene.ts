@@ -1,19 +1,73 @@
 ﻿import { GameObject } from "../GameObject/GameObject";
+import { Vector3 } from "../Matrix-gl/Vector3";
+import { ColliderComponent } from "../GameObject/Components/ColliderComponent";
 
+/**
+ * Scene class represents a scene in a game, it contains a dictionary of game objects, and light settings
+ * @param {string} name
+ * @returns
+ */
 export class Scene {
     private sceneGameObjects: { [name: string]: GameObject };
-    private sceneName: string;
+    private _sceneName: string;
     private selectedGameObject: GameObject;
+    private _totalColliders: number = 0;
+    private ambientLight: Vector3;
+    private dictColliders: { [id: number]: ColliderComponent } = {};
 
-    public constructor(name: string) {
-        this.sceneName = name;
-        this.sceneGameObjects = {};
-        //initialize with a camera and a directional light go.
+    private colliders: ColliderComponent[] = [];
+
+    public putCollider(collider: ColliderComponent): void {
+        collider.colliderId = this._totalColliders;
+        this.dictColliders[this._totalColliders] = collider;
+        this._totalColliders++;
+        this.colliders.push(collider);
     }
 
-    //camera
-    //global light
+    public  getColliders(): ColliderComponent[] {
+        return this.colliders;
+    }
+    public destroyCollider(collider: ColliderComponent) {
+        delete this.dictColliders[collider.colliderId];
+    }
 
+    public getDictColliders(): { [id: number]: ColliderComponent } {
+        return this.dictColliders;
+    }
+
+    public constructor(name: string) {
+        this._sceneName = name;
+        this.ambientLight = new Vector3(0.1, 0.1, 0.2);
+        this.sceneGameObjects = {};
+    }
+
+    /**
+     * Name of the Scene
+     * @returns
+     */
+    public get sceneName(): string {
+        return this._sceneName;
+    }
+    /**
+     * Returns the GameObject selected in the UI.
+     * @returns
+     */
+    public getSelectedObject(): GameObject {
+        return this.selectedGameObject;
+    }
+    /**
+     * Returns the ambient light intensity.
+     * @returns
+     */
+    public get ambientLightIntencity(): Vector3 {
+        return this.ambientLight;
+    }
+
+    /**
+     * Returns the GameObject with the name given, null if its dosent exists.
+     * @param {string} gameObjectName
+     * @returns
+     */
     public getGameObject(gameObjectName: string): GameObject | null {
         let go: GameObject | null = this.sceneGameObjects[gameObjectName];
         if (go === undefined) {
@@ -22,10 +76,29 @@ export class Scene {
         return go;
     }
 
+    public destroyGameObject(gameObjectName: string): void {
+        let go: GameObject | null = this.sceneGameObjects[gameObjectName];
+        if (go === undefined || go === null) {
+            console.warn(" Destroy GameObject that dont exist: ", gameObjectName);
+        }
+        else {
+            delete this.sceneGameObjects[gameObjectName];
+        }
+    }
+
+
+
+    /**
+     * Returns the dictionary of GameObjects.
+     */
     public getAllGameObjects(): { [name: string]: GameObject } {
         return this.sceneGameObjects;
     }
-
+    /**
+     * Puts a GameObject in the scene.
+     * @param {string} gameObjectName
+     * @param {GameObject} gameObject
+     */
     public putGameObject(gameObjectName: string, gameObject: GameObject): void {
         let go: GameObject = this.sceneGameObjects[gameObjectName];
         if (go === undefined || go === null) {
@@ -43,13 +116,18 @@ export class Scene {
         }
         this.addGameObjectToHTML(gameObjectName);
     }
-
+    /**
+     * Prints every GameObject in the scene debugin purpose.
+     */
     public printAllGameObjects(): void{
         for (let key in this.sceneGameObjects) {
             console.log(key);
         }
     }
-
+    /**
+     * Adds a button to the list of gameObjects in the UI.
+     * @param {string} name
+     */
     private addGameObjectToHTML(name: string): void {
         let list: HTMLElement = document.getElementById("gameObjectList");
         let newGameObjectElement: HTMLButtonElement = document.createElement("button");
@@ -61,6 +139,10 @@ export class Scene {
 
         list.appendChild(newGameObjectElement);
     }
+    /**
+     * Handles the press of a button in the UI.
+     * @param {string} name
+     */
     private onClickGameObjectButton(name: string): void {
         let go: GameObject | null = this.getGameObject(name);
         if (go !== null) {

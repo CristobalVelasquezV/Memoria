@@ -1,7 +1,8 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    /**gl manager
+    /**gl manager contains the unique instance of the gl WebGlRenderingContext , and made it accesible for each class, in a bigger proyect we need one of this
+     *  * for each display screen.
         * @class
         **/
     class GlManager {

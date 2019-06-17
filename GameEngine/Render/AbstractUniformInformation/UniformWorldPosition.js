@@ -8,6 +8,13 @@ define(["require", "exports", "./AbstractUniformInformation", "../../Matrix-gl/M
         loadUniform() {
             let position = this.bufferAdmin.renderComponent.origin.transform.position;
             let mPosition = Mat4_1.Mat4.fromTranslation(position);
+            let rotation = this.bufferAdmin.renderComponent.origin.transform.rotation;
+            if (this.bufferAdmin.renderComponent.origin.gameObjectName == "go2") {
+                //console.log(position.toString());
+                //console.log(rotation.toString());
+            }
+            let mRotation = Mat4_1.Mat4.fromQuaternion(rotation);
+            mPosition = Mat4_1.Mat4.multiply(mPosition, mRotation);
             GLManager_1.gl.uniformMatrix4fv(this.location, false, mPosition.getArray());
         }
     }

@@ -1,10 +1,23 @@
 define(["require", "exports", "./GLManager"], function (require, exports, GLManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * Struct for Attributes.
+     * @param {number} elementSize size of buffer
+     * @param {number = gl.FLOAT} dataType data type of the Attribute
+     * @param {number = gl.ARRAY_BUFFER} targetBufferType type of buffer
+     * @param {number = gl.TRIANGLES} mode mode of the buffer
+     */
     class AttributeInformation {
     }
     exports.AttributeInformation = AttributeInformation;
-    //faltan uniforms para los shaders.
+    /**
+     * Class GlBuffer manages gl buffer for storing attributes and for draw on screen.
+     * @param {number} elementSize
+     * @param {number = gl.FLOAT} dataType
+     * @param {number = gl.ARRAY_BUFFER} targetBufferType
+     * @param {number = gl.TRIANGLES} mode
+     */
     class GlBuffer {
         constructor(elementSize, dataType = GLManager_1.gl.FLOAT, targetBufferType = GLManager_1.gl.ARRAY_BUFFER, mode = GLManager_1.gl.TRIANGLES) {
             this.hasAttributeLocation = false;
@@ -33,9 +46,16 @@ define(["require", "exports", "./GLManager"], function (require, exports, GLMana
             }
             this.buffer = GLManager_1.gl.createBuffer();
         }
+        /**
+         * Destroy a glBuffer on Gpu.
+         */
         destroy() {
             GLManager_1.gl.deleteBuffer(this.buffer);
         }
+        /**
+         * Bind the buffer and every attribute it contains.
+         * @param {boolean = false} normalized
+         */
         bind(normalized = false) {
             GLManager_1.gl.bindBuffer(this.targetBufferType, this.buffer);
             if (this.hasAttributeLocation) {
@@ -45,16 +65,27 @@ define(["require", "exports", "./GLManager"], function (require, exports, GLMana
                 }
             }
         }
+        /**
+         * Unbind buffer and every attribute it contains.
+         */
         unbind() {
             for (let attributeInfo of this.attributes) {
                 GLManager_1.gl.disableVertexAttribArray(attributeInfo.location);
             }
             GLManager_1.gl.bindBuffer(this.targetBufferType, null);
         }
+        /**
+         * Adds an attribute to the list.
+         * @param {AttributeInformation} info
+         */
         addAttributeLocation(info) {
             this.hasAttributeLocation = true;
             this.attributes.push(info);
         }
+        /**
+         * Set the buffers data.
+         * @param {number[]} data data to be pushed
+         */
         setData(data) {
             this.clearData();
             this.pushBackData(data);
@@ -74,6 +105,9 @@ define(["require", "exports", "./GLManager"], function (require, exports, GLMana
         clearData() {
             this.data.length = 0;
         }
+        /**
+         * Initialize buffers type.
+         */
         upload() {
             GLManager_1.gl.bindBuffer(this.targetBufferType, this.buffer);
             let bufferData;
@@ -105,8 +139,10 @@ define(["require", "exports", "./GLManager"], function (require, exports, GLMana
             }
             GLManager_1.gl.bufferData(this.targetBufferType, bufferData, GLManager_1.gl.STATIC_DRAW);
         }
+        /**
+         * Draws the buffer on screen if the buffer is from a correct type.
+         */
         draw() {
-            //fix mal array buuger deberia ser element
             if (this.targetBufferType === GLManager_1.gl.ARRAY_BUFFER) {
                 GLManager_1.gl.drawArrays(this.mode, 0, this.data.length / this.elementSize);
             }

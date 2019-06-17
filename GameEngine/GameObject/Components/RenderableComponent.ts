@@ -1,10 +1,6 @@
 ﻿import { Mesh } from "../../Render/Mesh/Mesh";
-import { GlBuffer, AttributeInformation } from "../../Render/gl/GLBuffer";
 import { GameObject } from "../GameObject";
 import { IComponent } from "./IComponent";
-import { Render } from "../../Render/Render";
-import { gl } from "../../Render/gl/GLManager";
-import { JsonAsset } from "../../AssetManager/JsonAssetLoader";
 import { Material } from "../../Render/Material/Material";
 import { AbstractProgram } from "../../Render/AbstractProgram/AbstractProgram";
 import { AbstractBufferAdministratorFactory } from "../../Render/AbstractBufferAdministratorFactory/AbstractBufferAdministratorFactory";
@@ -13,14 +9,14 @@ import { AbstractBufferAdministrator } from "../../Render/AbstractBufferAdminist
 
 export class RenderableComponent extends IComponent {
 
-    protected enabled: boolean;
+
     private mesh: Mesh;
     private usedMaterial: Material;
     private bufferAdmin: AbstractBufferAdministrator;
+    private actualProgram: AbstractProgram;
 
     constructor(go: GameObject,mesh: Mesh, material?: Material ) {
         super(go);
-        go.addComponent(this);
         if (mesh !== undefined) {
             this.mesh = mesh;
         }
@@ -30,8 +26,8 @@ export class RenderableComponent extends IComponent {
         else {
             this.usedMaterial = material;
         }
-        let program: AbstractProgram = this.material.program;
-        let admin: AbstractBufferAdministratorFactory = program.factory;
+        this.actualProgram = this.material.program;
+        let admin: AbstractBufferAdministratorFactory = this.actualProgram.factory;
         this.bufferAdmin = admin.getBufferAdmin(this);
     }
 
@@ -52,15 +48,22 @@ export class RenderableComponent extends IComponent {
         
     }
 
+
     update(): void {
+        if (typeof this.actualProgram !== typeof this.material.program) {
+            this.actualProgram = this.material.program;
+            let admin: AbstractBufferAdministratorFactory = this.actualProgram.factory;
+            this.bufferAdmin = admin.getBufferAdmin(this);
+        }
         this.material.program.useProgram();
         this.bufferAdmin.bindBuffers();
         this.bufferAdmin.updateAllUniforms();
         this.bufferAdmin.draw();
     }
 
-    public destroy(): void {
 
+    public destroy(): void {
+        this.bufferAdmin.destroy();
     }
 
     public get meshModel(): Mesh {

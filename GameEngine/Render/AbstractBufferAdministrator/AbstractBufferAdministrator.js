@@ -1,4 +1,4 @@
-define(["require", "exports", "../gl/GLBuffer", "../gl/GLManager", "../AbstractUniformInformation/AbstractUniformInformation", "../AbstractUniformInformation/UniformWorldPosition", "../AbstractUniformInformation/UniformSize", "../AbstractUniformInformation/UniformViewSceneCamera", "../AbstractUniformInformation/UniformProjectionSceneCamera"], function (require, exports, GLBuffer_1, GLManager_1, AbstractUniformInformation_1, UniformWorldPosition_1, UniformSize_1, UniformViewSceneCamera_1, UniformProjectionSceneCamera_1) {
+define(["require", "exports", "../gl/GLBuffer", "../gl/GLManager", "../AbstractUniformInformation/AbstractUniformInformation", "../AbstractUniformInformation/UniformWorldPosition", "../AbstractUniformInformation/UniformSize", "../AbstractUniformInformation/UniformViewSceneCamera", "../AbstractUniformInformation/UniformProjectionSceneCamera", "../AbstractUniformInformation/UniformSampler", "../AbstractUniformInformation/UniformDirectionalLightDirection", "../AbstractUniformInformation/UniformDirectionalLightColor", "../AbstractUniformInformation/UniformAmbientLight"], function (require, exports, GLBuffer_1, GLManager_1, AbstractUniformInformation_1, UniformWorldPosition_1, UniformSize_1, UniformViewSceneCamera_1, UniformProjectionSceneCamera_1, UniformSampler_1, UniformDirectionalLightDirection_1, UniformDirectionalLightColor_1, UniformAmbientLight_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class AbstractBufferAdministrator {
@@ -8,6 +8,12 @@ define(["require", "exports", "../gl/GLBuffer", "../gl/GLManager", "../AbstractU
             this._renderComponent = renderableComponent;
             this.loadDefaultBuffers();
             this.loadDefaultUniforms();
+        }
+        destroy() {
+            for (let i = 0; i < this.totalBuffers.length; i++) {
+                this.totalBuffers[i].destroy();
+            }
+            delete this.totalUniforms;
         }
         get renderComponent() {
             return this._renderComponent;
@@ -63,6 +69,24 @@ define(["require", "exports", "../gl/GLBuffer", "../gl/GLManager", "../AbstractU
                 let uniformProj = new UniformProjectionSceneCamera_1.UniformProjectionSceneCamera(projLocation, AbstractUniformInformation_1.UniformType.FloatMat4Array, this);
                 this.totalUniforms.push(uniformProj);
             }
+            let ambientLightLocation;
+            ambientLightLocation = prog.getUniformLocation('ambientLight');
+            if (ambientLightLocation !== null) {
+                let uniformambient = new UniformAmbientLight_1.UniformAmbientLight(ambientLightLocation, AbstractUniformInformation_1.UniformType.Vector3, this);
+                this.totalUniforms.push(uniformambient);
+            }
+            let directionalLightLocation;
+            directionalLightLocation = prog.getUniformLocation('directionalLightDirection');
+            if (directionalLightLocation !== null) {
+                let uniformdirectional = new UniformDirectionalLightDirection_1.UniformDirectionalLightDirection(directionalLightLocation, AbstractUniformInformation_1.UniformType.Vector3, this);
+                this.totalUniforms.push(uniformdirectional);
+            }
+            let directionalLightColorLocation;
+            directionalLightColorLocation = prog.getUniformLocation('directionalLightColor');
+            if (directionalLightColorLocation !== null) {
+                let uniformcolor = new UniformDirectionalLightColor_1.UniformDirectionalLightColor(directionalLightColorLocation, AbstractUniformInformation_1.UniformType.Vector3, this);
+                this.totalUniforms.push(uniformcolor);
+            }
         }
         loadDefaultBuffers() {
             let mesh1 = this.renderComponent.meshModel;
@@ -83,6 +107,8 @@ define(["require", "exports", "../gl/GLBuffer", "../gl/GLManager", "../AbstractU
                         this.textureCoordinatesBuffer.upload();
                         this.textureCoordinatesBuffer.unbind();
                         this.totalBuffers.push(this.textureCoordinatesBuffer);
+                        let uniformSampler = new UniformSampler_1.UniformSampler(prog.getUniformLocation('sampler'), AbstractUniformInformation_1.UniformType.FloatMat4Array, this);
+                        this.totalUniforms.push(uniformSampler);
                     }
                     this.vertexBuffer = new GLBuffer_1.GlBuffer(meshData.data.meshes[0].vertices.length);
                     this.vertexBuffer.bind();

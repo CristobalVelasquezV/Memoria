@@ -3,7 +3,6 @@ import { GameObject } from "../GameObject";
 
 export class CameraComponent extends IComponent {
 
-    protected enabled: boolean;
 
     constructor(go: GameObject) {
         super(go);

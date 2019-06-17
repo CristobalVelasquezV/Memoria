@@ -1,4 +1,8 @@
-﻿export class GlMatrix {
+﻿/**
+ * GlMatrix contains constants and tool functions for the Matematic library .
+ *  * 
+ */
+export class GlMatrix {
     public static readonly EPSILON: number = 0.000001;
     public static readonly DEGREE: number = Math.PI / 180;
 

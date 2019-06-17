@@ -4,7 +4,6 @@ define(["require", "exports", "./IComponent", "../../Render/Material/Material"],
     class RenderableComponent extends IComponent_1.IComponent {
         constructor(go, mesh, material) {
             super(go);
-            go.addComponent(this);
             if (mesh !== undefined) {
                 this.mesh = mesh;
             }
@@ -14,8 +13,8 @@ define(["require", "exports", "./IComponent", "../../Render/Material/Material"],
             else {
                 this.usedMaterial = material;
             }
-            let program = this.material.program;
-            let admin = program.factory;
+            this.actualProgram = this.material.program;
+            let admin = this.actualProgram.factory;
             this.bufferAdmin = admin.getBufferAdmin(this);
         }
         set material(newMaterial) {
@@ -29,12 +28,18 @@ define(["require", "exports", "./IComponent", "../../Render/Material/Material"],
         start() {
         }
         update() {
+            if (typeof this.actualProgram !== typeof this.material.program) {
+                this.actualProgram = this.material.program;
+                let admin = this.actualProgram.factory;
+                this.bufferAdmin = admin.getBufferAdmin(this);
+            }
             this.material.program.useProgram();
             this.bufferAdmin.bindBuffers();
             this.bufferAdmin.updateAllUniforms();
             this.bufferAdmin.draw();
         }
         destroy() {
+            this.bufferAdmin.destroy();
         }
         get meshModel() {
             return this.mesh;

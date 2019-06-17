@@ -1,15 +1,22 @@
 define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function (require, exports, Transform_1, SceneManager_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    /**
+     * GameObject Class contains metods for scripting components.
+     * @param {string} name?
+     * @param {Vector3} position?
+     * @returns
+     */
     class GameObject {
         constructor(name, position) {
-            this.transform = new Transform_1.Transform();
             this.components = [];
+            this.transform = new Transform_1.Transform(this);
+            this.components = [];
+            this.enabled = true;
             if (position !== undefined) {
                 this.transform.position = position;
             }
             if (name === undefined) {
-                //see if already exist this name.
                 let newName = "GameObject";
                 let name = "GameObject";
                 let i = 1;
@@ -25,6 +32,10 @@ define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function
                 SceneManager_1.SceneManager.actualScene.putGameObject(name, this);
             }
         }
+        /**
+         * Get Game Object names must be unique in each Scene.
+         * @returns
+         */
         get gameObjectName() {
             return this.name;
         }
@@ -32,9 +43,18 @@ define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function
         }
         static loadGameObjectFromResources(meshResource) {
         }
+        /**
+         * Adds a Component to the gameObject
+         * @param {IComponent} component
+         */
         addComponent(component) {
+            component.origin = this;
             this.components.push(component);
         }
+        /**
+         * Deletes a Component
+         * @param {IComponent} component
+         */
         deleteComponent(component) {
             for (let i = 0; i < this.components.length; i++) {
                 if (typeof (component) === typeof (this.components[i])) {
@@ -42,6 +62,10 @@ define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function
                 }
             }
         }
+        /**
+         * Deletes a Component Generic Version
+         * @param {IComponent} component
+         */
         getComponent(component) {
             // let s2: string = component instanceof T;
             for (let i = 0; i < this.components.length; i++) {
@@ -53,20 +77,41 @@ define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function
             }
             return null;
         }
+        /**
+         * Get specific Component from the gameObjects, returns nulls if the component do not exist.
+         * @param {Class} component
+         * @returns
+         */
         getComponentTest(component) {
             // let s2: string = component instanceof T;
+            //console.log(component);
             for (let i = 0; i < this.components.length; i++) {
+                //console.log(this.components[i] instanceof component);
                 if (this.components[i] instanceof component) {
                     let comp = this.components[i];
-                    console.log("retorno componente correcto test");
-                    console.log(typeof comp);
+                    //console.log("retorno componente correcto test");
+                    //console.log(typeof comp);
                     return comp;
                 }
             }
             return null;
         }
+        /**
+         * Get every component of the GameObject.
+         * @returns
+         */
         getComponents() {
             return this.components;
+        }
+        static Destroy(go) {
+            let components = go.getComponents();
+            for (let i = 0; i < components.length; i++) {
+                if (components[i] !== null && components[i] !== undefined) {
+                    components[i].destroy();
+                }
+                delete components[i];
+            }
+            SceneManager_1.SceneManager.actualScene.destroyGameObject(go.name);
         }
     }
     GameObject.modelPath = "assets/models/";

@@ -11,7 +11,6 @@ export class AssetManager {
 
     private static assetLoaders: IAssetLoader[] = [];
     private static assetsLoaded: { [name: string]: IAsset } = {};
-
     private static assetPromises: Promise<any>[] = [];
     private static handlers: IMessageHandler[] = [];
 

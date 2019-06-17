@@ -1,5 +1,4 @@
 ﻿import { AbstractUniformInformation, UniformType } from "./AbstractUniformInformation";
-import { Vector3 } from "../../Matrix-gl/Vector3";
 import { AbstractBufferAdministrator } from "../AbstractBufferAdministrator/AbstractBufferAdministrator";
 import { Mat4 } from "../../Matrix-gl/Mat4";
 import { gl } from "../gl/GLManager";

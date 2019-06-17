@@ -1,6 +1,7 @@
 ﻿export var gl: WebGLRenderingContext;
 
-/**gl manager
+/**gl manager contains the unique instance of the gl WebGlRenderingContext , and made it accesible for each class, in a bigger proyect we need one of this
+ *  * for each display screen.
     * @class 
     **/
 export class GlManager {

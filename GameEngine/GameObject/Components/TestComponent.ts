@@ -2,17 +2,23 @@
 import { GameObject } from "../GameObject";
 import { Time } from "../../Time/Time";
 import { Engine } from "../../Engine/Engine";
+import { SceneManager } from "../../Scenes/SceneManager";
+import { Vector3 } from "../../Matrix-gl/Vector3";
+import { ColliderComponent } from "./ColliderComponent";
 
 export class TestComponent extends IComponent{
+
+    public cube: GameObject;
+    public finalposition: Vector3 = new Vector3(10, 10, 10);
     constructor(go: GameObject) {
         super(go);
-        go.addComponent(this);
     }
     awake(): void {
+        this.cube = SceneManager.actualScene.getGameObject("cube");
     }
 
     start(): void {
-        let g = Gen();
+        let g = this.Gen();
         console.log("add corutine");
         Engine.addCorutine(g);
     }
@@ -23,26 +29,18 @@ export class TestComponent extends IComponent{
         throw new Error("Method not implemented.");
     }
 
-    *generation(): IterableIterator<any> {
-        let t: number = 5;
-        let totalTime: number = 0;
+
+    * Gen() {
+    let t: number = 10000;
+    let totalTime: number = 0;
         while (totalTime < t) {
-            console.log("en la corutina");
-            totalTime += Time.deltaTime;
-            yield totalTime;
-        }
-        console.log("termino corrutina");
-     }
+            this.origin.transform.position.addVector(new Vector3(0.01, 0.01, 0.01));
+            this.origin.transform.rotateY(0.01);
+        totalTime += Time.deltaTime;
+        yield;
+    }
+    console.log("termino corrutina");
+}
  
 }
 
-function* Gen() {
-    let t: number = 10000;
-    let totalTime: number = 0;
-    while (totalTime < t) {
-        totalTime += Time.deltaTime;
-        //console.log("en la corutina");
-        yield;
-    }
-   // console.log("termino corrutina");
-}

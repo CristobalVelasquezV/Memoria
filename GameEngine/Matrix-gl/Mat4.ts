@@ -1,5 +1,6 @@
 ﻿import { Vector3 } from "./Vector3";
 import { GlMatrix } from "./GlMatrix";
+import { Quaternion } from "./Quaternion";
 
 /** 
  *      *Mat4 Class belongs to the mathematic library Matrix-gl, it manages 4x4 Matrices, like transformation Matrices
@@ -35,6 +36,50 @@ export class Mat4 {
         this.array[14] = 0;
         this.array[15] = 1;
     }
+    /**
+     * multiply two Mat4
+     * @param {Mat4} m1
+     * @param {Mat4} m2
+     * @returns {Mat4}
+     */
+    public static multiply(m1: Mat4, m2: Mat4): Mat4 {
+        let ret: Mat4 = new Mat4();
+        let out: Float32Array = ret.getArray();
+        let a: Float32Array = m1.getArray();
+        let b: Float32Array = m2.getArray();
+        var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
+            a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
+            a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
+            a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15];
+        var b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3];
+        out[0] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[1] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[2] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[3] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+        b0 = b[4]; b1 = b[5]; b2 = b[6]; b3 = b[7];
+        out[4] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[5] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[6] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[7] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+        b0 = b[8]; b1 = b[9]; b2 = b[10]; b3 = b[11];
+        out[8] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[9] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[10] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[11] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+
+        b0 = b[12]; b1 = b[13]; b2 = b[14]; b3 = b[15];
+        out[12] = b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30;
+        out[13] = b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31;
+        out[14] = b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32;
+        out[15] = b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33;
+        return ret;
+    }
+
+
+
+
 
     /**projecion returns a projection matrix given the parameters of the projection wanted.
      *  * the objective of this transform matrix is to transform a point in 3D space in to a 2D projection.
@@ -97,7 +142,13 @@ export class Mat4 {
         return this;
     }
 
-
+    /**Rotate Mat4 rad angles by the axis given.
+     * 
+     * @param {Mat4} mat
+     * @param {number} rad
+     * @param {Vector3} axis
+     * @returns
+     */
     public static rotate(mat: Mat4, rad: number, axis: Vector3): Mat4 {
         let matOut: Mat4 = new Mat4();
         let out: Float32Array = matOut.getArray();
@@ -186,6 +237,12 @@ export class Mat4 {
 
         return arrayMat;
     }
+
+    /**Returns a Mat4 that represent given scale vector.
+     * 
+     * @param {Vector3} scale
+     * @returns
+     */
     public static fromScaling(scale: Vector3): Mat4 {
         let matout: Mat4 = new Mat4();
         let out: Float32Array = matout.getArray();
@@ -207,7 +264,11 @@ export class Mat4 {
         out[15] = 1;
         return matout;
     }
-
+    /**Returns a Mat4 that represents a traslation.
+     * 
+     * @param {Vector3} positon
+     * @returns
+     */
     public static fromTranslation(positon: Vector3): Mat4 {
         let mat = new Mat4();
         let out = mat.getArray();
@@ -318,5 +379,49 @@ export class Mat4 {
         array[15] = 1;
 
         return arrayMat;
+    }
+    /**Creates a Mat4 that represent a rotation transform of a quaternion.
+     * 
+     * @param {Quaternion} q
+     * @returns
+     */
+    public static fromQuaternion(q: Quaternion): Mat4 {
+        let ret: Mat4 = new Mat4();
+        let out: Float32Array = ret.getArray();
+        var x = q.x, y = q.y, z = q.z, w = q.w,
+            x2 = x + x,
+            y2 = y + y,
+            z2 = z + z,
+
+            xx = x * x2,
+            yx = y * x2,
+            yy = y * y2,
+            zx = z * x2,
+            zy = z * y2,
+            zz = z * z2,
+            wx = w * x2,
+            wy = w * y2,
+            wz = w * z2;
+
+        out[0] = 1 - yy - zz;
+        out[1] = yx + wz;
+        out[2] = zx - wy;
+        out[3] = 0;
+
+        out[4] = yx - wz;
+        out[5] = 1 - xx - zz;
+        out[6] = zy + wx;
+        out[7] = 0;
+
+        out[8] = zx + wy;
+        out[9] = zy - wx;
+        out[10] = 1 - xx - yy;
+        out[11] = 0;
+
+        out[12] = 0;
+        out[13] = 0;
+        out[14] = 0;
+        out[15] = 1;
+        return ret;
     }
 }

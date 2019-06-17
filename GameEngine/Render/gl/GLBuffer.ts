@@ -1,5 +1,11 @@
 ﻿import { gl } from "./GLManager";
-
+/**
+ * Struct for Attributes.
+ * @param {number} elementSize size of buffer
+ * @param {number = gl.FLOAT} dataType data type of the Attribute
+ * @param {number = gl.ARRAY_BUFFER} targetBufferType type of buffer
+ * @param {number = gl.TRIANGLES} mode mode of the buffer
+ */
 export class AttributeInformation {
     public location: number;
     public size: number;
@@ -8,7 +14,13 @@ export class AttributeInformation {
 
 
 
-//faltan uniforms para los shaders.
+/**
+ * Class GlBuffer manages gl buffer for storing attributes and for draw on screen.
+ * @param {number} elementSize
+ * @param {number = gl.FLOAT} dataType
+ * @param {number = gl.ARRAY_BUFFER} targetBufferType
+ * @param {number = gl.TRIANGLES} mode
+ */
 export class GlBuffer {
     private hasAttributeLocation: boolean = false;
     private elementSize: number;
@@ -51,11 +63,16 @@ export class GlBuffer {
 
         this.buffer = gl.createBuffer();
     }
-
+    /**
+     * Destroy a glBuffer on Gpu.
+     */
     public destroy(): void {
         gl.deleteBuffer(this.buffer);
     }
-
+    /**
+     * Bind the buffer and every attribute it contains.
+     * @param {boolean = false} normalized
+     */
     public bind(normalized: boolean = false): void {
         gl.bindBuffer(this.targetBufferType, this.buffer);
         if (this.hasAttributeLocation) {
@@ -65,20 +82,28 @@ export class GlBuffer {
             }
         }
     }
-
+    /**
+     * Unbind buffer and every attribute it contains.
+     */
     public unbind(): void {
         for (let attributeInfo of this.attributes) {
             gl.disableVertexAttribArray(attributeInfo.location);
         }
         gl.bindBuffer(this.targetBufferType, null);
     }
-
+    /**
+     * Adds an attribute to the list.
+     * @param {AttributeInformation} info
+     */
     public addAttributeLocation(info: AttributeInformation): void {
         this.hasAttributeLocation = true;
         this.attributes.push(info);
     }
 
-
+    /**
+     * Set the buffers data.
+     * @param {number[]} data data to be pushed
+     */
     public setData(data: number[]): void {
         this.clearData();
         this.pushBackData(data);
@@ -100,7 +125,9 @@ export class GlBuffer {
     public clearData(): void {
         this.data.length = 0;
     }
-
+    /**
+     * Initialize buffers type.
+     */
     public upload(): void {
         gl.bindBuffer(this.targetBufferType, this.buffer);
 
@@ -134,10 +161,10 @@ export class GlBuffer {
 
         gl.bufferData(this.targetBufferType, bufferData, gl.STATIC_DRAW);
     }
-
+    /**
+     * Draws the buffer on screen if the buffer is from a correct type.
+     */
     public draw(): void {
-        //fix mal array buuger deberia ser element
-
         if (this.targetBufferType === gl.ARRAY_BUFFER) {
             gl.drawArrays(this.mode, 0, this.data.length / this.elementSize);
         } else if (this.targetBufferType === gl.ELEMENT_ARRAY_BUFFER) {

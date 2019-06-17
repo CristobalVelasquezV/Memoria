@@ -1,6 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    /**Key Code Enum stores All posible input Captures, using the javascript keycode numbers. */
     var KeyCode;
     (function (KeyCode) {
         KeyCode[KeyCode["BACKSPACE"] = 8] = "BACKSPACE";
@@ -104,22 +105,50 @@ define(["require", "exports"], function (require, exports) {
         KeyCode[KeyCode["SINGLE_QUOTE"] = 222] = "SINGLE_QUOTE";
     })(KeyCode = exports.KeyCode || (exports.KeyCode = {}));
     ;
+    /**
+     *  *  Input represents a Static Class Input handle the pressed keys each frame of the Game.
+     *  * */
     class Input {
+        /**
+         * privated constructor because it represents a static class.
+         */
         constructor() {
         }
+        /**
+         * Initalizes the Static Class.
+         */
         static initialize() {
             window.addEventListener("keydown", Input.onKeyDown);
             window.addEventListener("keyup", Input.onKeyUp);
         }
+        /**
+         *Returns true if the Key was pressed down this frame, else returns false.
+         * @param {KeyCode} key
+         * @returns
+         */
         static isKeyDown(key) {
             return this.keyDown[key];
         }
+        /**
+         * Returns true if the key upped this frame, else returns false.
+         * @param {KeyCode} key
+         * @returns
+         */
         static isKeyUp(key) {
             return this.keyUp[key];
         }
+        /**
+         * Returns true if the key is pressed, else returns false.
+         * @param {KeyCode} key
+         * @returns
+         */
         static isKeyPressed(key) {
             return this.keyPressed[key];
         }
+        /**
+         * Event Listnener function handles the setting of booleans when a key is pressed down.
+         * @param {KeyboardEvent} e
+         */
         static onKeyDown(e) {
             if (Input.keyPressed[e.keyCode]) {
                 Input.keyDown[e.keyCode] = false;
@@ -130,12 +159,19 @@ define(["require", "exports"], function (require, exports) {
             Input.keyPressed[e.keyCode] = true;
             Input.framePressedKeys.push(e.keyCode);
         }
+        /**
+         * Event Listener function handles the setting of booleans when a key is returned to his up position.
+         * @param {KeyboardEvent} e
+         */
         static onKeyUp(e) {
             Input.keyDown[e.keyCode] = false;
             Input.keyPressed[e.keyCode] = false;
             Input.keyUp[e.keyCode] = true;
             Input.framePressedKeys.push(e.keyCode);
         }
+        /**
+         * Update of the Static class Input resets the values of all the keys that were, pressed or returned to his upper position, last frame.
+         */
         static update() {
             let n = Input.framePressedKeys.pop();
             while (n !== null && n !== undefined) {

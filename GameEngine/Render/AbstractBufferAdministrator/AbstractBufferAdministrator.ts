@@ -10,6 +10,10 @@ import { UniformWorldPosition } from "../AbstractUniformInformation/UniformWorld
 import { UniformSize } from "../AbstractUniformInformation/UniformSize";
 import { UniformViewSceneCamera } from "../AbstractUniformInformation/UniformViewSceneCamera";
 import { UniformProjectionSceneCamera } from "../AbstractUniformInformation/UniformProjectionSceneCamera";
+import { UniformSampler } from "../AbstractUniformInformation/UniformSampler";
+import { UniformDirectionalLightDirection } from "../AbstractUniformInformation/UniformDirectionalLightDirection";
+import { UniformDirectionalLightColor } from "../AbstractUniformInformation/UniformDirectionalLightColor";
+import { UniformAmbientLight } from "../AbstractUniformInformation/UniformAmbientLight";
 
 export abstract class AbstractBufferAdministrator {
 
@@ -30,6 +34,12 @@ export abstract class AbstractBufferAdministrator {
         this.loadDefaultUniforms();    
     }
 
+    public destroy(): void {
+        for (let i = 0; i < this.totalBuffers.length; i++) {
+            this.totalBuffers[i].destroy();
+        }
+        delete this.totalUniforms;
+    }
     public get renderComponent() {
         return this._renderComponent;
     }
@@ -93,7 +103,25 @@ export abstract class AbstractBufferAdministrator {
             let uniformProj: UniformProjectionSceneCamera = new UniformProjectionSceneCamera(projLocation, UniformType.FloatMat4Array, this);
             this.totalUniforms.push(uniformProj);
         }
+        let ambientLightLocation: WebGLUniformLocation | null;
+         ambientLightLocation = prog.getUniformLocation('ambientLight');
+        if ( ambientLightLocation !== null) {
+            let uniformambient: UniformAmbientLight = new UniformAmbientLight(ambientLightLocation, UniformType.Vector3, this);
+            this.totalUniforms.push(uniformambient);
+        }
+        let directionalLightLocation: WebGLUniformLocation | null;
+        directionalLightLocation = prog.getUniformLocation('directionalLightDirection');
+        if (directionalLightLocation !== null) {
+            let uniformdirectional: UniformDirectionalLightDirection = new UniformDirectionalLightDirection(directionalLightLocation, UniformType.Vector3, this);
+            this.totalUniforms.push(uniformdirectional);
+        }
 
+        let directionalLightColorLocation: WebGLUniformLocation | null;
+        directionalLightColorLocation = prog.getUniformLocation('directionalLightColor');
+        if (directionalLightColorLocation !== null) {
+            let uniformcolor: UniformDirectionalLightColor = new UniformDirectionalLightColor(directionalLightColorLocation, UniformType.Vector3, this);
+            this.totalUniforms.push(uniformcolor);
+        }
     }
 
     public loadDefaultBuffers() {
@@ -117,6 +145,8 @@ export abstract class AbstractBufferAdministrator {
                     this.textureCoordinatesBuffer.upload();
                     this.textureCoordinatesBuffer.unbind();
                     this.totalBuffers.push(this.textureCoordinatesBuffer);
+                    let uniformSampler: UniformSampler = new UniformSampler(prog.getUniformLocation('sampler'), UniformType.FloatMat4Array, this);
+                    this.totalUniforms.push(uniformSampler);
                 }
 
 
