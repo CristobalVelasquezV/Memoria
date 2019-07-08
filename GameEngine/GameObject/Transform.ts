@@ -3,6 +3,7 @@ import { Quaternion } from "../Matrix-gl/Quaternion";
 import { GameObject } from "./GameObject";
 import { ColliderComponent } from "./Components/ColliderComponent";
 import { Mat4 } from "../Matrix-gl/Mat4";
+import { Physics } from "../Physics/Physics";
 /**
  * Transform class belongs to every GameObject and determine precisely his position,scale and rotation in the game space.
  * @returns
@@ -22,12 +23,25 @@ export class Transform {
 
     public set position(pos: Vector3) {
         let coll = this.origin.getComponentTest<ColliderComponent>(ColliderComponent);
-        if (coll !== null && coll !== undefined) {
-            console.log("funciono");
+        if (coll !== null && coll !== undefined && !coll.isTrigger) {
+            if (coll.inCollitionWithSomeOne() == false) {
+                let oldPost: Vector3 = this._position;
+                this._position = pos;
+                if (coll.inCollitionWithSomeOne()) {
+                    this._position = oldPost;
+                }
+                else {
+                    coll.onCollition = false;
+                }
+            }
+            else {
+                coll.onCollition = false;
+                this._position = pos;
+            }
         }
         else {
             this._position = pos;
-       }
+        }
     }
 
     public get origin(): GameObject {
@@ -100,7 +114,7 @@ export class Transform {
         //console.log("forward setting :" + this.forward.toString() + " " + newForward.toString());
         this._forward = newForward;
         this.reAlignForward();
-        this._rotation = Quaternion.setAxis(this._forward, this._right, this._up);
+        this._rotation = Quaternion.setAxis(this._forward, this._right, this._up).normalize();
     }
 
     constructor(origin:GameObject,position: Vector3 = new Vector3(0, 0, 0), scale: Vector3 = new Vector3(1, 1, 1),

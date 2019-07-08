@@ -16,28 +16,30 @@ define(["require", "exports", "../Scenes/SceneManager"], function (require, expo
                             if (!colliders[i].inCollitionWith(colliders[j])) {
                                 for (let k = 0; k < comp1.length; k++) {
                                     if (comp1[k] !== null && comp1[k] !== undefined) {
-                                        comp1[k].onCollisionEnter(colliders[j]);
+                                        comp1[k].onTriggerEnter(colliders[j]);
                                     }
                                 }
                                 for (let l = 0; l < comp2.length; l++) {
                                     if (comp2[l] !== null && comp2[l] !== undefined) {
-                                        comp2[l].onCollisionEnter(colliders[i]);
+                                        comp2[l].onTriggerEnter(colliders[i]);
                                     }
                                 }
                                 colliders[i].addCollition(colliders[j]);
                                 colliders[j].addCollition(colliders[i]);
-                                colliders[i].onCollition = true;
-                                colliders[j].onCollition = true;
+                                if (colliders[i].isTrigger == false && colliders[j].isTrigger == false) {
+                                    colliders[i].onCollition = true;
+                                    colliders[j].onCollition = true;
+                                }
                             }
                             else {
                                 for (let k = 0; k < comp1.length; k++) {
                                     if (comp1[k] !== null && comp1[k] !== undefined) {
-                                        comp1[k].onCollision(colliders[j]);
+                                        comp1[k].onTrigger(colliders[j]);
                                     }
                                 }
                                 for (let l = 0; l < comp2.length; l++) {
                                     if (comp2[l] !== null && comp2[l] !== undefined) {
-                                        comp2[l].onCollision(colliders[i]);
+                                        comp2[l].onTrigger(colliders[i]);
                                     }
                                 }
                             }
@@ -55,12 +57,12 @@ define(["require", "exports", "../Scenes/SceneManager"], function (require, expo
                             }
                             for (let k = 0; k < comp1.length; k++) {
                                 if (comp1[k] !== null && comp1[k] !== undefined) {
-                                    comp1[k].onCollisionExit(colliders[i]);
+                                    comp1[k].onTriggerExit(colliders[i]);
                                 }
                             }
                             for (let l = 0; l < comp2.length; l++) {
                                 if (comp2[l] !== null && comp2[l] !== undefined) {
-                                    comp2[l].onCollisionExit(colliders[j]);
+                                    comp2[l].onTriggerExit(colliders[j]);
                                 }
                             }
                         }

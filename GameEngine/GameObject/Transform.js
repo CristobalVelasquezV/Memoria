@@ -11,8 +11,21 @@ define(["require", "exports", "../Matrix-gl/Vector3", "../Matrix-gl/Quaternion",
         }
         set position(pos) {
             let coll = this.origin.getComponentTest(ColliderComponent_1.ColliderComponent);
-            if (coll !== null && coll !== undefined) {
-                console.log("funciono");
+            if (coll !== null && coll !== undefined && !coll.isTrigger) {
+                if (coll.inCollitionWithSomeOne() == false) {
+                    let oldPost = this._position;
+                    this._position = pos;
+                    if (coll.inCollitionWithSomeOne()) {
+                        this._position = oldPost;
+                    }
+                    else {
+                        coll.onCollition = false;
+                    }
+                }
+                else {
+                    coll.onCollition = false;
+                    this._position = pos;
+                }
             }
             else {
                 this._position = pos;
@@ -59,7 +72,7 @@ define(["require", "exports", "../Matrix-gl/Vector3", "../Matrix-gl/Quaternion",
             //console.log("forward setting :" + this.forward.toString() + " " + newForward.toString());
             this._forward = newForward;
             this.reAlignForward();
-            this._rotation = Quaternion_1.Quaternion.setAxis(this._forward, this._right, this._up);
+            this._rotation = Quaternion_1.Quaternion.setAxis(this._forward, this._right, this._up).normalize();
         }
         constructor(origin, position = new Vector3_1.Vector3(0, 0, 0), scale = new Vector3_1.Vector3(1, 1, 1), lookAt = new Vector3_1.Vector3(0, 0, 1), up = new Vector3_1.Vector3(0, 1, 0)) {
             this._origin = origin;

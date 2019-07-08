@@ -37,7 +37,7 @@ export class Scene {
 
     public constructor(name: string) {
         this._sceneName = name;
-        this.ambientLight = new Vector3(0.1, 0.1, 0.2);
+        this.ambientLight = new Vector3(0.3, 0.3, 0.3);
         this.sceneGameObjects = {};
     }
 
@@ -150,4 +150,12 @@ export class Scene {
             console.log("Game Object selected: ",name);
         }
     }
+    public addAllGameObjectsToHTML(): void {
+        let gos: { [name: string]: GameObject } = this.sceneGameObjects;
+        for (let name in gos) {
+            this.addGameObjectToHTML(name);
+        }
+    }
+
+
 }

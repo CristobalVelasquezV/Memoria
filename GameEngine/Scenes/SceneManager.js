@@ -34,6 +34,7 @@ define(["require", "exports", "./Scene"], function (require, exports, Scene_1) {
                     button.parentNode.removeChild(button);
                 }
                 SceneManager.scene = SceneManager.totalScenes[sceneIndex];
+                SceneManager.scene.addAllGameObjectsToHTML();
             }
         }
         /**

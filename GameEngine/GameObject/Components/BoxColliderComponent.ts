@@ -31,7 +31,6 @@ export class BoxColliderComponent extends ColliderComponent {
                 }
             }
         }
-
         return false;
     }
 

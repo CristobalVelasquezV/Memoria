@@ -35,15 +35,15 @@ export abstract class IComponent {
     /**destroy a component could require specific code.*/
     abstract destroy(): void;
 
-    public onCollisionEnter(other: ColliderComponent): void {
+    public onTriggerEnter(other: ColliderComponent): void {
 
     }
 
-    public onCollision(other: ColliderComponent): void {
+    public onTrigger(other: ColliderComponent): void {
 
     }
 
-    public onCollisionExit(other: ColliderComponent): void {
+    public onTriggerExit(other: ColliderComponent): void {
 
     }
 

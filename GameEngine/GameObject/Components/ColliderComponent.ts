@@ -1,6 +1,8 @@
 ﻿import { IComponent } from "./IComponent";
 import { GameObject } from "../GameObject";
 import { SceneManager } from "../../Scenes/SceneManager";
+import { Vector3 } from "../../Matrix-gl/Vector3";
+import { fail } from "assert";
 
 
 export abstract class ColliderComponent extends IComponent {
@@ -8,6 +10,7 @@ export abstract class ColliderComponent extends IComponent {
     private _isTrigger: boolean;
     private _onCollition: boolean;
     private _colliderId: number;
+    
 
     private inCollition: { [id: number]: ColliderComponent } = {};
 
@@ -70,6 +73,21 @@ export abstract class ColliderComponent extends IComponent {
 
     public destroy(): void {
        
+    }
+
+    public inCollitionWithSomeOne(): boolean {
+        let coll: ColliderComponent = this;
+        let colliders: { [id: number]: ColliderComponent } = SceneManager.actualScene.getDictColliders();
+        for (let i in colliders) {
+            if (colliders[i].colliderId != coll.colliderId) {
+                if (colliders[i].isTrigger == false && coll.collide(colliders[i])) {
+                    this.onCollition = true;
+                    return true;
+                }
+            }
+        }
+        this.onCollition = false;
+        return false
     }
 
     public abstract collideWith(collider: ColliderComponent): boolean;

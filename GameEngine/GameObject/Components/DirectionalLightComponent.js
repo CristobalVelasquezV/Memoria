@@ -4,7 +4,7 @@ define(["require", "exports", "./IComponent", "../../Matrix-gl/Vector3"], functi
     class DirectionalLightComponent extends IComponent_1.IComponent {
         constructor(go) {
             super(go);
-            this.directionLightColor = new Vector3_1.Vector3(0.4, 0.4, 0.4);
+            this.directionLightColor = new Vector3_1.Vector3(0.9, 0.9, 0.9);
             DirectionalLightComponent.allLights.push(this);
         }
         set lightColor(color) {

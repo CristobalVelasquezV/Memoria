@@ -12,7 +12,7 @@ define(["require", "exports", "../Matrix-gl/Vector3"], function (require, export
             this.dictColliders = {};
             this.colliders = [];
             this._sceneName = name;
-            this.ambientLight = new Vector3_1.Vector3(0.1, 0.1, 0.2);
+            this.ambientLight = new Vector3_1.Vector3(0.3, 0.3, 0.3);
             this.sceneGameObjects = {};
         }
         putCollider(collider) {
@@ -131,6 +131,12 @@ define(["require", "exports", "../Matrix-gl/Vector3"], function (require, export
             if (go !== null) {
                 this.selectedGameObject = go;
                 console.log("Game Object selected: ", name);
+            }
+        }
+        addAllGameObjectsToHTML() {
+            let gos = this.sceneGameObjects;
+            for (let name in gos) {
+                this.addGameObjectToHTML(name);
             }
         }
     }

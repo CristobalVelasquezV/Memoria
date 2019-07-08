@@ -17,11 +17,11 @@ define(["require", "exports"], function (require, exports) {
             this.originGo.addComponent(this);
             this.enabled = true;
         }
-        onCollisionEnter(other) {
+        onTriggerEnter(other) {
         }
-        onCollision(other) {
+        onTrigger(other) {
         }
-        onCollisionExit(other) {
+        onTriggerExit(other) {
         }
         fixedUpdate() {
         }

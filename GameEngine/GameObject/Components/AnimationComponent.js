@@ -30,4 +30,4 @@ define(["require", "exports", "./IComponent", "../../Time/Time", "../../Engine/E
     }
     exports.AnimationComponent = AnimationComponent;
 });
-//# sourceMappingURL=TestComponent.js.map
+//# sourceMappingURL=AnimationComponent.js.map

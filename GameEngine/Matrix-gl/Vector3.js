@@ -135,7 +135,8 @@ define(["require", "exports"], function (require, exports) {
          * @param {number} t
          * @returns
          */
-        static lerp(out, a, b, t) {
+        static lerp(a, b, t) {
+            let out = new Vector3(0, 0, 0);
             out.x = a.x + t * (b.x - a.x);
             out.y = a.y + t * (b.y - a.y);
             out.z = a.z + t * (b.z - a.z);
@@ -216,6 +217,7 @@ define(["require", "exports"], function (require, exports) {
             return ret;
         }
     }
+    Vector3.up = new Vector3(0, 1, 0);
     Vector3.zero = new Vector3(0, 0, 0);
     exports.Vector3 = Vector3;
 });

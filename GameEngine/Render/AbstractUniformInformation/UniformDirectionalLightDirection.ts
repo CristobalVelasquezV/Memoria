@@ -15,7 +15,7 @@ export class UniformDirectionalLightDirection extends AbstractUniformInformation
         let light: DirectionalLightComponent = DirectionalLightComponent.getFirstLight();
         if (light !== null && light !== undefined) {
             let direction: Vector3 = light.origin.transform.forward;
-            gl.uniform3fv(this.location, this.default.toArray());
+            gl.uniform3fv(this.location, direction.toArray());
         }
         else {
             gl.uniform3fv(this.location, this.default.toArray());

@@ -49,6 +49,20 @@ define(["require", "exports", "./IComponent", "../../Scenes/SceneManager"], func
         }
         destroy() {
         }
+        inCollitionWithSomeOne() {
+            let coll = this;
+            let colliders = SceneManager_1.SceneManager.actualScene.getDictColliders();
+            for (let i in colliders) {
+                if (colliders[i].colliderId != coll.colliderId) {
+                    if (colliders[i].isTrigger == false && coll.collide(colliders[i])) {
+                        this.onCollition = true;
+                        return true;
+                    }
+                }
+            }
+            this.onCollition = false;
+            return false;
+        }
     }
     exports.ColliderComponent = ColliderComponent;
 });

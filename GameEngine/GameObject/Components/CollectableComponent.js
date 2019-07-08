@@ -13,6 +13,9 @@ define(["require", "exports", "./IComponent"], function (require, exports, IComp
         }
         destroy() {
         }
+        fixedUpdate() {
+            this.origin.transform.rotateY(0.02);
+        }
     }
     exports.CollectableComponent = CollectableComponent;
 });

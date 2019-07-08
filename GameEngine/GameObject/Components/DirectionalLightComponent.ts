@@ -9,7 +9,7 @@ export class DirectionalLightComponent extends IComponent {
 
     constructor(go: GameObject) {
         super(go);
-        this.directionLightColor = new Vector3(0.4,0.4,0.4);
+        this.directionLightColor = new Vector3(0.9,0.9,0.9);
         DirectionalLightComponent.allLights.push(this);
     }
 

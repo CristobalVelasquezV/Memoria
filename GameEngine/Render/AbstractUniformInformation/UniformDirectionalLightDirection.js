@@ -10,7 +10,7 @@ define(["require", "exports", "./AbstractUniformInformation", "../gl/GLManager",
             let light = DirectionalLightComponent_1.DirectionalLightComponent.getFirstLight();
             if (light !== null && light !== undefined) {
                 let direction = light.origin.transform.forward;
-                GLManager_1.gl.uniform3fv(this.location, this.default.toArray());
+                GLManager_1.gl.uniform3fv(this.location, direction.toArray());
             }
             else {
                 GLManager_1.gl.uniform3fv(this.location, this.default.toArray());

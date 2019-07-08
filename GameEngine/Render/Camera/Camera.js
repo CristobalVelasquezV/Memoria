@@ -64,6 +64,9 @@ define(["require", "exports", "../../Matrix-gl/Vector3", "../../Matrix-gl/Mat4",
         moveUp(dist) {
             this.position.scaleAndAdd(this.up, dist);
         }
+        setPosition(pos) {
+            this.position = pos;
+        }
     }
     Camera.moveForwardSpeed = 10;
     Camera.rotationSpeed = 1;

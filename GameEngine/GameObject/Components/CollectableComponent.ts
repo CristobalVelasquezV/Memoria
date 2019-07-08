@@ -20,5 +20,9 @@ export class CollectableComponent extends IComponent {
         
     }
 
+    fixedUpdate(): void {
+        this.origin.transform.rotateY(0.02);
+    }
+
 
 }

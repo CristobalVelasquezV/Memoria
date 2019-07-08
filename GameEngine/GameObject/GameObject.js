@@ -83,14 +83,9 @@ define(["require", "exports", "./Transform", "../Scenes/SceneManager"], function
          * @returns
          */
         getComponentTest(component) {
-            // let s2: string = component instanceof T;
-            //console.log(component);
             for (let i = 0; i < this.components.length; i++) {
-                //console.log(this.components[i] instanceof component);
                 if (this.components[i] instanceof component) {
                     let comp = this.components[i];
-                    //console.log("retorno componente correcto test");
-                    //console.log(typeof comp);
                     return comp;
                 }
             }

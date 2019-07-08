@@ -37,6 +37,7 @@ export class SceneManager {
                 button.parentNode.removeChild(button);
             }
             SceneManager.scene = SceneManager.totalScenes[sceneIndex];
+            SceneManager.scene.addAllGameObjectsToHTML();
         }
     }
     /**

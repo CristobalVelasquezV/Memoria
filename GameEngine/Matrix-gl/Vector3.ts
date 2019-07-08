@@ -9,6 +9,7 @@ export class Vector3 {
     public y: number;
     public z: number;
 
+    public static readonly up: Vector3 = new Vector3(0, 1, 0);
     public static readonly zero: Vector3 = new Vector3(0, 0, 0);
 
     /**
@@ -156,7 +157,8 @@ export class Vector3 {
      * @param {number} t
      * @returns
      */
-    public static lerp(out: Vector3, a: Vector3, b: Vector3, t: number): Vector3 {
+    public static lerp(a: Vector3, b: Vector3, t: number): Vector3 {
+        let out: Vector3 = new Vector3(0, 0, 0);
         out.x = a.x + t * (b.x - a.x);
         out.y = a.y + t * (b.y - a.y);
         out.z = a.z + t * (b.z - a.z);

@@ -185,8 +185,9 @@
     <TypeScriptCompile Include="GameEngine\GameObject\Components\ColliderComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\DirectionalLightComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\ControllerComponent.ts" />
-    <TypeScriptCompile Include="GameEngine\GameObject\Components\TestComponent.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\AnimationComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\IComponent.ts" />
+    <TypeScriptCompile Include="GameEngine\GameObject\Components\MovingPlatformComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\RenderableComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Components\CameraComponent.ts" />
     <TypeScriptCompile Include="GameEngine\GameObject\Transform.ts" />

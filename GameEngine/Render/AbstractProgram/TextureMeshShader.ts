@@ -41,6 +41,7 @@ export class TextureMeshShader extends AbstractProgram {
             'void main()',
             '{',
             'vec3 lightDirectionNormilized=normalize(directionalLightDirection);',
+            '',
             'vec3 lightIntencity=ambientLight+directionalLightColor*max(dot(fragNormal,lightDirectionNormilized),0.0);',
             'vec4 texel=texture2D(sampler, fragTexCoord);',
             'gl_FragColor=vec4(texel.rgb*lightIntencity,texel.a);',

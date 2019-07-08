@@ -106,14 +106,9 @@ export class GameObject {
      * @returns
      */
     public getComponentTest<T extends IComponent>(component: any): T | null {
-        // let s2: string = component instanceof T;
-        //console.log(component);
         for (let i = 0; i < this.components.length; i++) {
-            //console.log(this.components[i] instanceof component);
             if (this.components[i] instanceof component ) {
                 let comp: T = this.components[i] as unknown as T;
-                //console.log("retorno componente correcto test");
-                //console.log(typeof comp);
                 return comp;
             }
         }

@@ -97,4 +97,8 @@ export class Camera {
         this.position.scaleAndAdd(this.up, dist);
     }
 
+    public setPosition(pos: Vector3) {
+        this.position = pos;
+    }
+
 }
